@@ -26,6 +26,7 @@ const Tabs = createBottomTabNavigator();
 const Home = () => {
   return (
     <Tabs.Navigator
+      initialRouteName="PostScreen"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -37,7 +38,7 @@ const Home = () => {
           } else if (route.name === "Settings") {
             iconName = focused ? "grid-outline" : "grid-outline";
             component = "Ionicons";
-          } else if (route.name === "PostScreen") {
+          } else if (route.name === "ProfileScreen") {
             iconName = focused ? "user" : "user";
             component = "Feather";
           }
@@ -56,7 +57,7 @@ const Home = () => {
     >
       <Tabs.Screen name="Settings" component={Settings} />
       <Tabs.Screen name="CreatePostsScreen" component={CreatePostsScreen} />
-      <Tabs.Screen name="PostScreen" component={PostScreen} />
+      <Tabs.Screen name="ProfileScreen" component={ProfileScreen} />
     </Tabs.Navigator>
   );
 };
