@@ -21,6 +21,8 @@ const RegistrationScreen = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
+  const body = { login, mail, password };
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -57,7 +59,6 @@ const RegistrationScreen = () => {
             position: "absolute",
             top: -60,
             borderRadius: 16,
-            //   overflow: "hidden",
           }}
         >
           <View
@@ -75,15 +76,10 @@ const RegistrationScreen = () => {
           </View>
 
           <TouchableOpacity
-            style={{
-              position: "absolute",
-              width: 26,
-              height: 26,
-              justifyContent: "center",
-              alignItems: "center",
-              right: -13,
-              bottom: 14,
+            onPress={() => {
+              console.log("addFoto");
             }}
+            style={styles.addFoto}
           >
             <AntDesign name="pluscircleo" size={26} color="#FF6C00" />
           </TouchableOpacity>
@@ -152,7 +148,7 @@ const RegistrationScreen = () => {
           <CustomButton
             text="Зареєстуватися"
             onPress={() => {
-              console.log(1);
+              console.log(body);
             }}
           />
         )}
@@ -192,5 +188,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E8E8E8",
     backgroundColor: "#F6F6F6",
+  },
+  addFoto: {
+    position: "absolute",
+    width: 26,
+    height: 26,
+    justifyContent: "center",
+    alignItems: "center",
+    right: -13,
+    bottom: 14,
   },
 });

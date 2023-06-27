@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import AuthBG from "../component/authBG";
 import CustomButton from "../component/customButton";
@@ -17,6 +18,8 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+  const body = { mail, password };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -98,7 +101,7 @@ const LoginScreen = () => {
           <CustomButton
             text="Увійти"
             onPress={() => {
-              console.log(1);
+              console.log(body);
             }}
           />
         )}
