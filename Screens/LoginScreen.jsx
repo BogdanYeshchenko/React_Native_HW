@@ -12,12 +12,14 @@ import CustomButton from "../component/customButton";
 import AuthMainBox from "../component/authMainBox";
 import AuthTitle from "../component/authTitle";
 import { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const navigation = useNavigation();
 
   const body = { mail, password };
 
@@ -47,78 +49,84 @@ const LoginScreen = () => {
   };
 
   return (
-    <AuthBG>
-      <AuthMainBox>
-        <AuthTitle text="Увійти" marginTop={32} />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{ flex: 1 }}>
+        <AuthBG>
+          <AuthMainBox>
+            <AuthTitle text="Увійти" marginTop={32} />
 
-        <View style={styles.inputBox}>
-          <TextInput
-            style={styles.input}
-            onChangeText={setMail}
-            value={mail}
-            patt
-            placeholder="Адреса електронної пошти"
-            keyboardType="email-address"
-          />
-        </View>
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.input}
+                onChangeText={setMail}
+                value={mail}
+                patt
+                placeholder="Адреса електронної пошти"
+                keyboardType="email-address"
+              />
+            </View>
 
-        <View
-          style={{
-            ...styles.inputBox,
-            marginBottom: !isKeyboardOpen ? 43 : 32,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <TextInput
-            style={styles.input}
-            onChangeText={setPassword}
-            secureTextEntry={showPassword}
-            value={password}
-            placeholder="Пароль"
-            keyboardType="default"
-          />
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-            }}
-            onPress={toggleShowPassword}
-          >
-            <Text
+            <View
               style={{
-                color: "#1B4371",
-                fontFamily: "Roboto-Regular",
-                fontSize: 16,
-                textAlign: "center",
+                ...styles.inputBox,
+                marginBottom: !isKeyboardOpen ? 43 : 32,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              {showPassword ? "Показати" : "Сховати"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        {!isKeyboardOpen && (
-          <CustomButton
-            text="Увійти"
-            onPress={() => {
-              console.log(body);
-            }}
-          />
-        )}
-        {!isKeyboardOpen && (
-          <Text
-            style={{
-              color: "#1B4371",
-              fontFamily: "Roboto-Regular",
-              fontSize: 16,
-              marginBottom: 45,
-            }}
-          >
-            Немає акаунту? Зареєструватися
-          </Text>
-        )}
-      </AuthMainBox>
-    </AuthBG>
+              <TextInput
+                style={styles.input}
+                onChangeText={setPassword}
+                secureTextEntry={showPassword}
+                value={password}
+                placeholder="Пароль"
+                keyboardType="default"
+              />
+              <TouchableOpacity
+                style={{
+                  alignItems: "center",
+                }}
+                onPress={toggleShowPassword}
+              >
+                <Text
+                  style={{
+                    color: "#1B4371",
+                    fontFamily: "Roboto-Regular",
+                    fontSize: 16,
+                    textAlign: "center",
+                  }}
+                >
+                  {showPassword ? "Показати" : "Сховати"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {!isKeyboardOpen && (
+              <CustomButton
+                text="Увійти"
+                onPress={() => {
+                  console.log(body);
+                  navigation.navigate("Home");
+                }}
+              />
+            )}
+            {!isKeyboardOpen && (
+              <Text
+                onPress={() => navigation.navigate("Registration")}
+                style={{
+                  color: "#1B4371",
+                  fontFamily: "Roboto-Regular",
+                  fontSize: 16,
+                  marginBottom: 45,
+                }}
+              >
+                Немає акаунту? Зареєструватися
+              </Text>
+            )}
+          </AuthMainBox>
+        </AuthBG>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
