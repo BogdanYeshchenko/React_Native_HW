@@ -86,7 +86,16 @@ const RegistrationScreen = () => {
                 }}
                 style={styles.addFoto}
               >
-                <AntDesign name="pluscircleo" size={26} color="#FF6C00" />
+                {/* <AntDesign name="pluscircleo" size={26} color="#FF6C00" /> */}
+                <AntDesign
+                  name="closecircleo"
+                  size={24}
+                  style={{
+                    backgroundColor: "#FFFFFF", // Заливка третьим цвето
+                    color: "#BDBDBD",
+                    borderRadius: 12, // Радиус скругления
+                  }}
+                />
               </TouchableOpacity>
             </View>
 
@@ -154,6 +163,7 @@ const RegistrationScreen = () => {
                 text="Зареєстуватися"
                 onPress={() => {
                   console.log(body);
+                  navigation.navigate("PostScreen");
                 }}
               />
             )}

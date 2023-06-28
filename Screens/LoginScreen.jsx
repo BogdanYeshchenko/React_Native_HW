@@ -106,7 +106,7 @@ const LoginScreen = () => {
                 text="Увійти"
                 onPress={() => {
                   console.log(body);
-                  navigation.navigate("Home");
+                  navigation.navigate("PostScreen");
                 }}
               />
             )}

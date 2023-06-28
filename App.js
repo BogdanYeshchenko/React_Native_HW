@@ -15,6 +15,9 @@ import { Feather } from "@expo/vector-icons"; //user
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import Home from "./Screens/Home";
+import PostScreen from "./Screens/PostsScreen";
+import CreatePostsScreen from "./Screens/CreatePostsScreen";
+import ProfileScreen from "./Screens/ProfileScreen";
 
 const MainStack = createStackNavigator(); // вказує на групу навігаторів
 
@@ -34,32 +37,18 @@ export default function App() {
     <NavigationContainer>
       <MainStack.Navigator
         initialRouteName="Login"
-        // screenOptions={{
-        //   headerShown: false, // Установите значение headerShown в false
-        // }}
+        screenOptions={{
+          headerShown: false,
+        }}
       >
+        <MainStack.Screen name="Registration" component={RegistrationScreen} />
+        <MainStack.Screen name="Login" component={LoginScreen} />
+        <MainStack.Screen name="PostScreen" component={PostScreen} />
         <MainStack.Screen
-          name="Registration"
-          component={RegistrationScreen}
-          options={{
-            headerShown: false,
-          }}
+          name="CreatePostsScreen"
+          component={CreatePostsScreen}
         />
-        <MainStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-
-        <MainStack.Screen
-          name="Home"
-          component={Home}
-          options={() => ({
-            headerShown: false,
-          })}
-        />
+        <MainStack.Screen name="ProfileScreen" component={ProfileScreen} />
       </MainStack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
