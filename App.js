@@ -18,6 +18,8 @@ import Home from "./Screens/Home";
 import PostScreen from "./Screens/PostsScreen";
 import CreatePostsScreen from "./Screens/CreatePostsScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
+import CommentsScreen from "./Screens/CommentsScreen";
+import MapScreen from "./Screens/MapScreen";
 
 const MainStack = createStackNavigator(); // вказує на групу навігаторів
 
@@ -49,6 +51,8 @@ export default function App() {
           component={CreatePostsScreen}
         />
         <MainStack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <MainStack.Screen name="CommentsScreen" component={CommentsScreen} />
+        <MainStack.Screen name="MapScreen" component={MapScreen} />
       </MainStack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

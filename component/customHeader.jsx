@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     height: 26,
     position: "absolute",
     left: 10,
+    borderBottomColor: "#000000",
   },
   title: { fontFamily: "Roboto-Medium", fontSize: 17 },
   logout: { width: 26, height: 26, position: "absolute", right: 10 },
