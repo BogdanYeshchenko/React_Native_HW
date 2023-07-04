@@ -13,15 +13,20 @@ import AuthMainBox from "../component/authMainBox";
 import AuthTitle from "../component/authTitle";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { logInThunk } from "../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
+import { auth } from "../firebase/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const LoginScreen = () => {
-  const [mail, setMail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const body = { mail, password };
+  const body = { email, password };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -58,8 +63,8 @@ const LoginScreen = () => {
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.input}
-                onChangeText={setMail}
-                value={mail}
+                onChangeText={setEmail}
+                value={email}
                 patt
                 placeholder="Адреса електронної пошти"
                 keyboardType="email-address"
@@ -105,7 +110,10 @@ const LoginScreen = () => {
               <CustomButton
                 text="Увійти"
                 onPress={() => {
-                  console.log(body);
+                  dispatch(logInThunk(body));
+
+                  console.log(999999);
+
                   navigation.navigate("PostScreen");
                 }}
               />

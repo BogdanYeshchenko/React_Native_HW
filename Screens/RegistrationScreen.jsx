@@ -15,16 +15,20 @@ import AuthTitle from "../component/authTitle";
 import { AntDesign } from "@expo/vector-icons";
 import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { logUpThunk } from "../redux/auth/authOperations";
 
 const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
-  const [mail, setMail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.auth.isAuth);
 
-  const body = { login, mail, password };
+  const body = { login, email, password };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -114,8 +118,8 @@ const RegistrationScreen = () => {
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.input}
-                onChangeText={setMail}
-                value={mail}
+                onChangeText={setEmail}
+                value={email}
                 patt
                 placeholder="Адреса електронної пошти"
                 keyboardType="email-address"
@@ -163,6 +167,10 @@ const RegistrationScreen = () => {
                 text="Зареєстуватися"
                 onPress={() => {
                   console.log(body);
+                  console.log(isAuth);
+
+                  dispatch(logUpThunk(body));
+
                   navigation.navigate("PostScreen");
                 }}
               />

@@ -1,15 +1,19 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { logOutThunk } from "../redux/auth/authOperations";
 
 const CustomHeader = ({ title, logout = false, back = false }) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.mainBox}>
       {back && (
         <TouchableOpacity
           onPress={() => {
+            dispatch(logOutThunk());
             navigation.navigate("PostScreen");
           }}
           style={styles.back}

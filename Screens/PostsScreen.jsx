@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import CustomHeader from "../component/customHeader";
 import CustomBottomBar from "../component/customBottomBar";
+import { useSelector } from "react-redux";
 
 const PostScreen = () => {
-  const route = useRoute();
-  const currentPageName = route.name;
   const navigation = useNavigation();
+  const user = useSelector((state) => state.auth);
   return (
     <>
       <CustomHeader title="Публікації" logout={true} />
@@ -20,8 +20,8 @@ const PostScreen = () => {
             />
           </View>
           <View>
-            <Text style={styles.userName}>Natali Romanova</Text>
-            <Text>email@example.com</Text>
+            <Text style={styles.userName}>{user.login}</Text>
+            <Text>{user.login}</Text>
           </View>
         </View>
 
@@ -38,8 +38,8 @@ const PostScreen = () => {
           <View style={styles.postDescriptionBox}>
             <TouchableOpacity
               onPress={() => {
-                console.log("Comments");
-                navigation.navigate("CommentsScreen");
+                console.log(user);
+                // navigation.navigate("CommentsScreen");
               }}
               style={styles.commentBox}
             >
