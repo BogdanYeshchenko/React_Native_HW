@@ -1,13 +1,40 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  FlatList,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import CustomHeader from "../component/customHeader";
 import CustomBottomBar from "../component/customBottomBar";
 import { useSelector } from "react-redux";
+import { db } from "../firebase/config";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 const PostScreen = () => {
+  const [posts, setPosts] = useState(null);
   const navigation = useNavigation();
   const user = useSelector((state) => state.auth);
+
+  const getPosts = async () => {
+    const q = query(collection(db, "Posts"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const posts = [];
+      querySnapshot.forEach((doc) => {
+        posts.push({ ...doc.data(), id: doc.id });
+      });
+      setPosts(posts);
+    });
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, [getPosts]);
+
   return (
     <>
       <CustomHeader title="Публікації" logout={true} />
@@ -26,39 +53,51 @@ const PostScreen = () => {
         </View>
 
         <View style={styles.postBox}>
-          <View style={styles.postPhotoBox}>
-            <Image
-              style={styles.postPhoto}
-              source={require("../src/assets/img/forest.jpg")}
-            />
-          </View>
-          <View style={{ marginBottom: 8 }}>
-            <Text style={styles.postName}>Ліс</Text>
-          </View>
-          <View style={styles.postDescriptionBox}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log(user);
-                // navigation.navigate("CommentsScreen");
-              }}
-              style={styles.commentBox}
-            >
-              <Feather name="message-circle" size={24} color="#BDBDBD" />
-              <Text style={styles.commentsCounter}>0</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                console.log("Map");
-                navigation.navigate("MapScreen");
-              }}
-              style={styles.commentBox}
-            >
-              <Feather name="map-pin" size={22} color="#BDBDBD" />
-              <Text style={styles.locationText}>
-                Ivano-Frankivs'k Region, Ukraine
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <FlatList
+            data={posts}
+            keyExtractor={(post) => post.id.toString()}
+            renderItem={(post) => (
+              <>
+                <View style={styles.postPhotoBox}>
+                  <Image
+                    style={styles.postPhoto}
+                    source={{ uri: post.item.photoUrl }}
+                  />
+                </View>
+                <View style={{ marginBottom: 8 }}>
+                  <Text style={styles.postName}>{post.item.title}</Text>
+                </View>
+                <View style={styles.postDescriptionBox}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log(post.item);
+                      navigation.navigate("CommentsScreen", {
+                        post: post.item,
+                      });
+                    }}
+                    style={styles.commentBox}
+                  >
+                    <Feather name="message-circle" size={24} color="#BDBDBD" />
+                    <Text style={styles.commentsCounter}>
+                      {post.item.comments.length || "0"}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      console.log("Map");
+                      navigation.navigate("MapScreen", { post: post.item });
+                    }}
+                    style={styles.commentBox}
+                  >
+                    <Feather name="map-pin" size={22} color="#BDBDBD" />
+                    <Text style={styles.locationText}>
+                      {post.item.locationName}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+          />
         </View>
       </View>
 
@@ -66,6 +105,17 @@ const PostScreen = () => {
     </>
   );
 };
+
+// {
+//   photoUrl,
+//   title: name,
+//   locationName: locality,
+//   photoLocation: location,
+//   ownerId: userId,
+//   comments: [],
+//   dateCreate: formattedDate,
+//   likes: [],
+// }
 
 export default PostScreen;
 
@@ -96,8 +146,7 @@ const styles = StyleSheet.create({
   userName: { fontFamily: "Roboto-Medium", fontSize: 13, fontWeight: 700 },
   userMail: { fontFamily: "Roboto-Medium", fontSize: 11, fontWeight: 400 },
   postBox: {
-    width: "100%",
-    height: 299,
+    flex: 1,
   },
   postPhotoBox: {
     width: "100%",
@@ -120,6 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 10,
+    marginBottom: 32,
   },
   commentsCounter: {
     color: "#BDBDBD",

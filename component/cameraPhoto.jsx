@@ -4,10 +4,11 @@ import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
-const CameraPhoto = () => {
+const CameraPhoto = ({ getPhotoUri }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [photoUri, setPhotoUri] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -16,7 +17,9 @@ const CameraPhoto = () => {
 
       setHasPermission(status === "granted");
     })();
-  }, []);
+
+    getPhotoUri(photoUri);
+  }, [photoUri]);
 
   if (hasPermission === null) {
     return <View />;
@@ -47,6 +50,7 @@ const CameraPhoto = () => {
               if (cameraRef) {
                 const { uri } = await cameraRef.takePictureAsync();
                 await MediaLibrary.createAssetAsync(uri);
+                setPhotoUri(uri);
               }
             }}
           >

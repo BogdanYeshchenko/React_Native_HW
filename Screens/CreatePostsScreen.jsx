@@ -14,13 +14,18 @@ import CustomHeader from "../component/customHeader";
 import CameraPhoto from "../component/cameraPhoto";
 import CustomButton from "../component/customButton";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { uploadPhotoToServer } from "../firebase/uploadPhotoToServer ";
+import { writePostToFirestore } from "../firebase/writePostToFirestore";
+import { useSelector } from "react-redux";
+import { format } from "date-fns";
 
 const CreatePostsScreen = () => {
   const [name, setName] = useState("");
   const [locality, setLocality] = useState("");
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [location, setLocation] = useState(null);
-
+  const [photoUrl, setPhotoUrl] = useState(null);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const userId = useSelector((state) => state.auth.userId);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -58,6 +63,38 @@ const CreatePostsScreen = () => {
     };
   }, []);
 
+  const getPhotoUri = async (photo) => {
+    const photoUrl = await uploadPhotoToServer(photo);
+    // console.log(photoUrl);
+    setPhotoUrl(photoUrl);
+  };
+
+  const publish = async () => {
+    const currentDate = new Date();
+    const formattedDate = format(currentDate, "dd MMMM, yyyy | HH:mm");
+    console.log(isInputsTrue && location && photoUrl !== undefined);
+    try {
+      if (isInputsTrue && location && photoUrl !== undefined) {
+        const response = await writePostToFirestore({
+          photoUrl,
+          title: name,
+          locationName: locality,
+          photoLocation: location,
+          ownerId: userId,
+          comments: [],
+          dateCreate: formattedDate,
+          likes: [],
+        });
+
+        console.log(response);
+
+        isInputsTrue && navigation.navigate("PostScreen");
+      }
+    } catch (error) {
+      console.log("errorPublish:", error);
+    }
+  };
+
   const isInputsTrue = name.length > 0 && locality.length > 0;
 
   return (
@@ -66,7 +103,7 @@ const CreatePostsScreen = () => {
         <CustomHeader title="Створити публікацію" back={true} style={{}} />
         <View style={styles.mainBox}>
           <View style={styles.cameraBox}>
-            <CameraPhoto />
+            <CameraPhoto getPhotoUri={getPhotoUri} />
           </View>
 
           <View
@@ -117,13 +154,9 @@ const CreatePostsScreen = () => {
           {!isKeyboardOpen && (
             <CustomButton
               text="Опубліковати"
-              buttonColor={isInputsTrue ? "#FF6C00" : "#dadada"}
-              textColor={isInputsTrue ? "#FFFFFF" : "#BDBDBD"}
-              onPress={() => {
-                console.log(location);
-                isInputsTrue && console.log(isInputsTrue);
-                isInputsTrue && navigation.navigate("PostScreen");
-              }}
+              buttonColor={isInputsTrue && photoUrl ? "#FF6C00" : "#dadada"}
+              textColor={isInputsTrue && photoUrl ? "#FFFFFF" : "#BDBDBD"}
+              onPress={publish}
             />
           )}
         </View>

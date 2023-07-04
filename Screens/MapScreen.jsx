@@ -4,7 +4,9 @@ import MapView, { Marker } from "react-native-maps";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
-const MapScreen = () => {
+const MapScreen = ({ route }) => {
+  const { post } = route.params;
+
   const mapRef = React.useRef(null);
   const navigation = useNavigation();
 
@@ -13,8 +15,8 @@ const MapScreen = () => {
       <MapView
         style={styles.mapStyle}
         region={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: post.photoLocation.latitude,
+          longitude: post.photoLocation.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -25,7 +27,10 @@ const MapScreen = () => {
       >
         <Marker
           title="I am here"
-          coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+          coordinate={{
+            latitude: post.photoLocation.latitude,
+            longitude: post.photoLocation.longitude,
+          }}
           description="Hello"
         />
       </MapView>

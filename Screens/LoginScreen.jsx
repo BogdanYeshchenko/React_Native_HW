@@ -53,6 +53,17 @@ const LoginScreen = () => {
     setShowPassword(!showPassword);
   };
 
+  const logInPress = async () => {
+    try {
+      const response = await dispatch(logInThunk(body)).unwrap();
+      console.log(response);
+
+      if (response) {
+        navigation.navigate("PostScreen");
+      }
+    } catch (error) {}
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1 }}>
@@ -107,16 +118,7 @@ const LoginScreen = () => {
               </TouchableOpacity>
             </View>
             {!isKeyboardOpen && (
-              <CustomButton
-                text="Увійти"
-                onPress={() => {
-                  dispatch(logInThunk(body));
-
-                  console.log(999999);
-
-                  navigation.navigate("PostScreen");
-                }}
-              />
+              <CustomButton text="Увійти" onPress={logInPress} />
             )}
             {!isKeyboardOpen && (
               <Text
