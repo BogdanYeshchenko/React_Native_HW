@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { auth } from "../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { authSlice, getCurrentUser } from "../redux/auth/authReducer";
+import { persistor, store } from "../redux/store";
 
 const MainStack = createStackNavigator(); // вказує на групу навігаторів
 

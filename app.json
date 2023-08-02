@@ -21,14 +21,21 @@
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDiiKdfcgsbgU2PF3jIuMuIJ71Hm30xSro"
-        }},
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.b.yeshchenko.ReactNativeHW"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3849aa9e-783a-4961-bed4-9daa0c519b00"
+      }
     }
   }
 }

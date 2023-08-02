@@ -70,11 +70,30 @@ const CreatePostsScreen = () => {
   };
 
   const publish = async () => {
+    console.log(11111111);
     const currentDate = new Date();
+    console.log(2222222);
+
     const formattedDate = format(currentDate, "dd MMMM, yyyy | HH:mm");
-    console.log(isInputsTrue && location && photoUrl !== undefined);
+    console.log(333333);
+
+    console.log(location);
+
     try {
-      if (isInputsTrue && location && photoUrl !== undefined) {
+      console.log(444444);
+
+      if ("isInputsTrue && location && photoUrl !== undefined") {
+        console.log({
+          photoUrl,
+          title: name,
+          locationName: locality,
+          photoLocation: location,
+          ownerId: userId,
+          comments: [],
+          dateCreate: formattedDate,
+          likes: [],
+        });
+
         const response = await writePostToFirestore({
           photoUrl,
           title: name,
@@ -86,16 +105,23 @@ const CreatePostsScreen = () => {
           likes: [],
         });
 
+        console.log(66666666);
+
         console.log(response);
 
-        isInputsTrue && navigation.navigate("PostScreen");
+        navigation.navigate("PostScreen");
+        console.log(777777777);
       }
     } catch (error) {
+      console.log(8888888);
+
       console.log("errorPublish:", error);
+      console.log(99999);
     }
+    console.log("000000");
   };
 
-  const isInputsTrue = name.length > 0 && locality.length > 0;
+  const isInputsTrue = name?.length > 0 && locality?.length > 0;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -103,7 +129,7 @@ const CreatePostsScreen = () => {
         <CustomHeader title="Створити публікацію" back={true} style={{}} />
         <View style={styles.mainBox}>
           <View style={styles.cameraBox}>
-            <CameraPhoto getPhotoUri={getPhotoUri} />
+            {/* <CameraPhoto getPhotoUri={getPhotoUri} /> */}
           </View>
 
           <View

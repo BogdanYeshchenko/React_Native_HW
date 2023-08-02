@@ -79,7 +79,7 @@ const PostScreen = () => {
                   >
                     <Feather name="message-circle" size={24} color="#BDBDBD" />
                     <Text style={styles.commentsCounter}>
-                      {post.item.comments.length || "0"}
+                      {post.item.comments?.length || "0"}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity

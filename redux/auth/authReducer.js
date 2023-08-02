@@ -13,7 +13,16 @@ const initialState = {
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    getCurrentUser: (state, { payload }) => ({
+      ...state,
+      userId: payload.userId,
+      login: payload.login,
+      email: payload.email,
+      avatar: payload.avatar,
+      isAuth: true,
+    }),
+  },
   extraReducers: (builder) => {
     builder
       .addCase(logUpThunk.pending, (state, { payload }) => {})
@@ -64,12 +73,3 @@ export const authSlice = createSlice({
 });
 
 export const { getCurrentUser } = authSlice.actions;
-
-// {logOutThunk
-//   uid, displayName, email, photoURL;
-// }
-
-// Action creators are generated for each case reducer function
-// export const { increment, decrement, incrementByAmount } = counterSlice.actions;
-
-// export default counterSlice.reducer;

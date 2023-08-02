@@ -25,6 +25,7 @@ import MapScreen from "./Screens/MapScreen";
 import FlashMessage from "react-native-flash-message";
 import Main from "./Screens/Main";
 import { PersistGate } from "redux-persist/integration/react";
+import "./firebase/config";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
